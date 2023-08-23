@@ -1,0 +1,34 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-image-from-git-repo
+spec:
+  workspaces:
+    - name: workshop
+      description: our content should be available here
+  params:
+    - name: storageDriver
+      type: string
+      description: Use storage driver type vfs.
+      default: vfs
+  steps:
+    - name: build-image
+      image: quay.io/buildah/stable
+      script: |
+        #!/usr/bin/env bash
+        ????
+      env:
+        - name: DESTINATION_IMAGE
+          value: "$(params.destination-image)"
+        - name: CONTEXT_DIR
+          value: "$(workspaces.workshop.path)/$(params.context-dir)"
+        - name: STORAGE_DRIVER
+          value: "$(params.storageDriver)"
+      workingDir: "$(workspaces.workshop.path)/$(params.context-dir)"
+      volumeMounts:
+        - name: varlibc
+          mountPath: ???
+  volumes:
+    - name: varlibc
+      emptyDir: {}

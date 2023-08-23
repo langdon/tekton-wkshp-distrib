@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-and-deploy-pipeline
+spec:
+  workspaces:
+    - name: workshop
+      description: The git repo will be cloned onto the volume backing this workspace
+  params:
+    ???
+  tasks:
+    ???

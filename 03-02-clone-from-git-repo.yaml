@@ -1,0 +1,45 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: clone-from-git-repo
+spec:
+  workspaces:
+    - name: workshop
+      description: The git repo will be cloned onto the volume backing this workspace
+  params:
+    - name: repo-url
+      ???
+    - name: storageDriver
+      type: string
+      description: Use storage driver type vfs.
+      default: vfs
+  steps:
+    - image: 'gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.21.0'
+      name: clone
+      resources: {}
+      script: |
+        CHECKOUT_DIR=???
+
+        echo starting cleandir for $CHECKOUT_DIR
+        # Delete any existing contents of the repo directory if it exists.
+        #
+        # We don't just "rm -rf $CHECKOUT_DIR" because $CHECKOUT_DIR might be "/"
+        # or the root of a mounted volume.
+        if [[ -d "$CHECKOUT_DIR" ]] ; then
+          # Delete non-hidden files and directories
+          rm -rf "$CHECKOUT_DIR"/*
+          # Delete files and directories starting with . but excluding ..
+          rm -rf "$CHECKOUT_DIR"/.[!.]*
+          # Delete files and directories starting with .. plus any other character
+          rm -rf "$CHECKOUT_DIR"/..?*
+        fi
+        echo cleandir complete
+
+        echo attempting git clone
+        /ko-app/git-init \
+          -url "???" \
+          -path "???"
+        ???
+        RESULT_SHA="$(git rev-parse HEAD)"
+        echo ???

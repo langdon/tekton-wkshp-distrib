@@ -1,0 +1,8 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: echo-hello-detroit
+spec:
+  steps:
+    - name: echo
+      image: ubuntu
